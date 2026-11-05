@@ -49,8 +49,16 @@ button.g{border-color:transparent;background:none;color:var(--mu)}button.ib{padd
 .av{width:48px;height:48px;border-radius:50%;background:var(--or);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px}
 .upd{position:sticky;top:0;z-index:30;background:var(--or);color:#fff;border-radius:14px;padding:8px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}.upd button{background:#fff;color:var(--or2);border:0;font-weight:700}
 @media print{.bn,.appbar,.noprint,.upd,button{display:none!important}main{margin:0!important;padding:0!important;max-width:none}body{background:#fff;color:#000}.card,.stats div{box-shadow:none;break-inside:avoid}}
-</style></head><body><main id="app"></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</style></head><body><main id="app"><div class="auth" role="status"><img src="assets/icons/logo.png" alt="USP-Dang Library"><div class="card"><h1>USP-Dang Library</h1><p>Chargement de la bibliothèque…</p></div></div></main>
+<noscript><p class="card">Activez JavaScript dans votre navigateur pour ouvrir la bibliothèque.</p></noscript>
+<script>
+function startupError(){
+ document.querySelector('#app').innerHTML='<div class="auth" role="alert"><img src="assets/icons/logo.png" alt="USP-Dang Library"><div class="card"><h1>Chargement impossible</h1><p>La bibliothèque ne parvient pas à démarrer. Vérifiez votre connexion puis réessayez.</p><button class="p" onclick="location.reload()">Réessayer</button></div></div>';
+}
+const startupTimer=setTimeout(startupError,15000);
+addEventListener('error',()=>{if(document.querySelector('#app [role="status"]')){clearTimeout(startupTimer);startupError()}});
+</script>
+<script src="assets/vendor/supabase-2.45.4.js" onerror="clearTimeout(startupTimer);startupError()"></script>
 <script>
 const CFG={url:'https://zvhmiifzjqvclealnapo.supabase.co',key:'sb_publishable_1WomU5BRq_NLyUq5upaA5g_8WvDDq1E'}; 
 const sb=supabase.createClient(CFG.url,CFG.key);
@@ -113,9 +121,12 @@ async function auth(){const em=$('#em').value.trim(),pw=$('#pw').value;let r;
  else r=await sb.auth.signInWithPassword({email:em,password:pw});
  if(r.error){say(r.error.message);draw()}}
 const out=()=>sb.auth.signOut();
-sb.auth.onAuthStateChange((e,s)=>setTimeout(()=>{ready=true;if(s?.user){if(!me||me.id!=s.user.id)boot(s.user)}else{me=null;draw()}},0));
+sb.auth.onAuthStateChange((e,s)=>setTimeout(async()=>{
+ try{if(s?.user){if(!me||me.id!=s.user.id)await boot(s.user);else{ready=true;await draw()}}else{me=null;ready=true;await draw()}clearTimeout(startupTimer)}
+ catch{clearTimeout(startupTimer);startupError()}
+},0));
 async function boot(u){const{data}=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();
- me=data||{id:u.id,role:'user',full_name:u.email};me.email=u.email;await sb.rpc('sweep');listen();draw()}
+ me=data||{id:u.id,role:'user',full_name:u.email};me.email=u.email;await sb.rpc('sweep');listen();ready=true;await draw()}
 function listen(){if(chan)sb.removeChannel(chan);
  chan=sb.channel('n'+me.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+me.id},p=>{say(p.new.message,1);
  try{if(Notification.permission=='granted')new Notification('USP-Dang Library',{body:p.new.message})}catch(e){}draw()}).subscribe()}
@@ -165,7 +176,7 @@ async members(){const[p,l]=await Promise.all([sb.from('profiles').select('*').or
 const route=()=>location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
 const pick=p=>p[0]=='admin'?[({livres:'books',emprunts:'loans',file:'queue',membres:'members',rapports:'reports'})[p[1]]||'overview']:p[0]=='livre'?['book',p[1]]:[({emprunt:'mine',alertes:'alerts',profil:'profile'})[p[0]]||'catalog'];
 const tools=()=>`<div class="tl">${canInst()?`<button class="g ib" title="${t('install')}" onclick="inst()">${ic('download')}</button>`:''}<button class="g ib" onclick="setL('${L=='fr'?'en':'fr'}')">${L=='fr'?'EN':'FR'}</button><button class="g ib" onclick="setTh('${th=='dark'?'light':'dark'}')">${ic(th=='dark'?'sun':'moon')}</button>${me?.role=='admin'?`<button class="g ib" onclick="nav('profil')">${ic('user')}</button>`:''}</div>`;
-async function draw(){const a=$('#app'),m=msg,g=good;msg='';if(!ready){a.innerHTML='';return}const p=route();
+async function draw(){const a=$('#app'),m=msg,g=good;msg='';if(!ready)return;const p=route();
  if(!me){const reg=p[0]=='inscription';a.innerHTML=`<div class="appbar"><span></span>${tools()}</div><div class="auth"><img src="assets/icons/logo.png" alt="USP-Dang Library"><p class="sub">${t('tagline')}</p><div class="card"><div class="seg"><button class="${reg?'':'on'}" onclick="nav('connexion')">${t('login')}</button><button class="${reg?'on':''}" onclick="nav('inscription')">${t('signup')}</button></div>${reg?`<input id="nm" placeholder="${t('name')}" autocomplete="name">`:''}<input id="em" type="email" placeholder="${t('email')}" autocomplete="email"><input id="pw" type="password" placeholder="${t('pwd')}" autocomplete="current-password"><div class="msg ${g?'ok':''}">${esc(m)}</div><button class="p" style="width:100%" onclick="auth()">${reg?t('signupBtn'):t('loginBtn')}</button></div></div>`;return}
  const adm=me.role=='admin';
  if(['connexion','inscription'].includes(p[0])||(adm&&p[0]!='admin'&&p[0]!='profil')||(!adm&&p[0]=='admin')){location.replace('#/'+(adm?'admin':''));return}
