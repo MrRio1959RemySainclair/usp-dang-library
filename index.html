@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F28C38">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="assets/icons/icon-192.png"><link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>USP-Dang Library</title>
+<style>
+:root{--or:#F28C38;--or2:#E8741A;--ort:#FFF1E4;--bg:#FFFAF5;--sf:#fff;--tx:#2B2118;--mu:#8A7B6E;--bd:#F3E4D6;--wa:#D9480F;--er:#C92A2A;--ok:#2F9E6B;--okt:#E6F6EE;--wat:#FFF4E5;--ert:#FDECEC;--sh:0 6px 22px rgba(242,140,56,.12)}
+html[data-theme=dark]{--bg:#1E1612;--sf:#2A201A;--tx:#F6EDE4;--mu:#B3A294;--bd:#3B2E26;--ort:#3A2718;--or:#F59A4A;--or2:#F7A95F;--wa:#F2994A;--er:#F26B6B;--ok:#4CC38A;--okt:#17372A;--wat:#3F2A16;--ert:#42201F;--sh:0 6px 22px rgba(0,0,0,.35)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;padding-top:env(safe-area-inset-top)}
+main{max-width:860px;margin:0 auto;padding:14px 16px calc(96px + env(safe-area-inset-bottom))}
+h1{font-size:19px;margin:0;font-weight:800}h2{font-size:16px;margin:22px 0 8px}p{margin:8px 0}
+.sub{color:var(--mu);font-size:13px}.fx{flex:1;min-width:0}
+.ic{width:20px;height:20px;vertical-align:-4px;flex:none}
+.appbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.logo{display:flex;align-items:center;gap:10px}.logo img{width:44px;height:44px;border-radius:12px;box-shadow:var(--sh)}
+.tl{display:flex;gap:2px}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:var(--sh)}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+button,input,textarea{font:inherit;border-radius:999px;border:1px solid var(--bd);padding:9px 16px;background:var(--sf);color:var(--tx);outline:none}
+input,textarea{width:100%;margin:5px 0;border-radius:12px}input:focus{border-color:var(--or);box-shadow:0 0 0 3px var(--ort)}
+button{cursor:pointer;transition:.15s}button:hover{background:var(--ort)}button:active{transform:scale(.97)}
+button.p{background:var(--or);border-color:var(--or);color:#fff;font-weight:700}button.p:hover{background:var(--or2)}
+button.g{border-color:transparent;background:none;color:var(--mu)}button.ib{padding:8px 10px;font-weight:700;font-size:13px}button:disabled{opacity:.45;cursor:not-allowed}
+.bn{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--sf);border-top:1px solid var(--bd);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:20}
+.bn button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;border-radius:12px;font-size:11px;color:var(--mu);padding:6px 2px;position:relative}
+.bn button.on{color:var(--or2);font-weight:800;background:var(--ort)}
+.dot{position:absolute;top:0;right:22%;background:var(--er);color:#fff;border-radius:99px;font-size:10px;padding:0 5px;font-weight:700}
+@media(min-width:900px){.bn{top:0;right:auto;width:210px;flex-direction:column;gap:4px;padding:84px 10px 10px;border-top:0;border-right:1px solid var(--bd)}.bn button{flex:none;flex-direction:row;gap:10px;font-size:14px;padding:11px 14px;justify-content:flex-start}.dot{position:static;margin-left:auto}main{margin-left:210px;max-width:none;padding:18px 32px 40px}}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:999px;background:var(--ort);color:var(--or2);font-weight:700}
+.tag.ok{background:var(--okt);color:var(--ok)}.tag.w{background:var(--wat);color:var(--wa)}.tag.e{background:var(--ert);color:var(--er)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px}.chips button{white-space:nowrap;padding:6px 14px;font-size:13px}.chips button.on{background:var(--or);border-color:var(--or);color:#fff;font-weight:700}
+.sr{display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px}.sr input{border:0;margin:0;background:none;box-shadow:none}.sr .ic{color:var(--mu)}
+.bk{display:flex;gap:14px;cursor:pointer;transition:.15s}.bk:hover{transform:translateY(-2px)}
+.cv{position:relative;width:68px;height:96px;border-radius:10px;background:var(--ort);color:var(--or);display:grid;place-items:center;flex:none;overflow:hidden}.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.cv.lg{width:120px;height:170px}
+.bar{height:12px;border-radius:99px;background:var(--ort);overflow:hidden;margin:12px 0 6px}.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#F8B26A,var(--or));animation:fill 1s ease-out}.bar i.w{background:var(--wa)}.bar i.e{background:var(--er)}
+@keyframes fill{from{width:0}}@keyframes gr{from{transform:scaleY(0)}}@keyframes dn{from{stroke-dasharray:0 400}}
+.msg{min-height:20px;font-size:13px;color:var(--er);margin:4px 0}.msg.ok{color:var(--ok)}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th{color:var(--mu);font-size:12px;text-transform:uppercase;letter-spacing:.4px}td,th{text-align:left;padding:9px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px}.stats div{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:12px;box-shadow:var(--sh);font-size:13px;color:var(--mu)}.stats b{display:block;font-size:24px;color:var(--or2)}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.dn{width:130px;height:130px}.dn circle{animation:dn 1s ease-out}.lg2{font-size:13px;display:flex;flex-direction:column;gap:6px}.lg2 i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.bars{display:flex;gap:10px;align-items:flex-end;height:150px;padding-top:10px}.bc{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:12px;color:var(--mu)}.bc i{display:block;width:100%;background:linear-gradient(var(--or),#F8B26A);border-radius:8px 8px 0 0;transform-origin:bottom;animation:gr .8s ease-out;min-height:3px}
+.auth{max-width:400px;margin:5vh auto 0;text-align:center}.auth img{width:150px;border-radius:24px;box-shadow:var(--sh)}
+.seg{display:flex;background:var(--ort);border-radius:999px;padding:4px;margin:14px 0}.seg button{flex:1;border-color:transparent;background:none}.seg button.on{background:var(--sf);color:var(--or2);font-weight:700;box-shadow:var(--sh)}
+.seg2{display:flex;background:var(--ort);border-radius:999px;padding:3px}.seg2 button{border-color:transparent;background:none;padding:5px 14px}.seg2 button.on{background:var(--or);color:#fff}
+.av{width:48px;height:48px;border-radius:50%;background:var(--or);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px}
+.upd{position:sticky;top:0;z-index:30;background:var(--or);color:#fff;border-radius:14px;padding:8px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}.upd button{background:#fff;color:var(--or2);border:0;font-weight:700}
+@media print{.bn,.appbar,.noprint,.upd,button{display:none!important}main{margin:0!important;padding:0!important;max-width:none}body{background:#fff;color:#000}.card,.stats div{box-shadow:none;break-inside:avoid}}
+</style></head><body><main id="app"></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const CFG={url:'https://zvhmiifzjqvclealnapo.supabase.co',key:'sb_publishable_1WomU5BRq_NLyUq5upaA5g_8WvDDq1E'}; 
+const sb=supabase.createClient(CFG.url,CFG.key);
+const $=s=>document.querySelector(s),D=864e5;
+const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){}};
+let L=ls('lang')||((navigator.language||'fr').slice(0,2)=='en'?'en':'fr'),th=ls('theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+let me=null,msg='',good=false,chan=null,ready=false,CAT=[],Q='',F='all',dip=null,updW=null;
+document.documentElement.dataset.theme=th;document.documentElement.lang=L;
+const T={fr:{tagline:'Empruntez · Lisez · Rendez',login:'Connexion',signup:'Créer un compte',name:'Nom complet',email:'E-mail',pwd:'Mot de passe',loginBtn:'Se connecter',signupBtn:'Créer mon compte',nameReq:'Nom et mot de passe (6 caractères min.) requis.',created:'Compte créé. Confirmez votre e-mail, puis connectez-vous.',
+catalog:'Catalogue',loan:'Emprunt',alerts:'Alertes',profile:'Profil',overview:'Aperçu',books:'Livres',loans:'Emprunts',queue:'File',members:'Membres',reports:'Rapports',
+avail:'Disponible',outTo:'Emprunté · retour le {d}',reserved:'Réservé',resYou:'Réservé pour vous',borrow:'Emprunter',pickup:'Retirer',request:'Demander',cancel:'Annuler',back:'Retour',ret:'Retour',add:'Ajouter',del:'Supprimer',search:'Rechercher un titre ou un auteur',f_all:'Tous',f_avail:'Disponibles',f_out:'Empruntés',f_mine:'Mes demandes',
+borrowed:'Livre emprunté. Bonne lecture !',queued:'Vous êtes dans la file d’attente.',returned:'Retour enregistré.',waiting:'{n} en attente',qpos:'File n°{n}',nf:'Livre introuvable.',none:'Aucun résultat.',
+myLoan:'Mon emprunt',noLoan:'Aucun emprunt en cours. Choisissez un livre dans le catalogue.',span:'Du {a} au {b}',left:'{n} j restants',late:'{n} j de retard',elapsed:'{n} % de la durée écoulée',myReq:'Mes demandes',noReq:'Aucune demande.',readyUntil:'Prêt pour vous jusqu’au {d}',inQ:'En file d’attente',
+notif:'Activer les notifications',readAll:'Tout marquer comme lu',noAl:'Aucune alerte.',
+addBook:'Ajouter un livre',title:'Titre',author:'Auteur',cover:'Image de couverture (URL, facultatif)',desc:'Description (facultatif)',
+member:'Membre',taken:'Emprunté',due:'Retour prévu',state:'État',since:'Depuis',onGoing:'En cours',overdue:'En retard',retOn:'Rendu le {d}',noLoans:'Aucun emprunt.',emptyQ:'File vide.',resUntil:'Réservé jusqu’au {d}',
+sBooks:'Livres',sAvail:'En rayon',sMem:'Membres',sOut:'Emprunts',sLate:'Retards',sQ:'En file',
+distrib:'Répartition des livres',perMonth:'Emprunts par mois',topBooks:'Livres les plus empruntés',topMem:'Membres les plus actifs',lateNow:'Retards',noData:'Pas de données.',noneF:'Aucun.',gen:'Rapport généré le {d}.',pdf:'Exporter en PDF',
+total:'Total',current:'En cours',ok:'À jour',admin:'administrateur',
+lang:'Langue',theme:'Thème',light:'Clair',dark:'Sombre',install:'Installer l’application',iosTip:'Sur iPhone : touchez Partager puis « Sur l’écran d’accueil ».',logout:'Déconnexion',updAvail:'Une nouvelle version est disponible.',updBtn:'Mettre à jour'},
+en:{tagline:'Borrow · Read · Return',login:'Log in',signup:'Sign up',name:'Full name',email:'Email',pwd:'Password',loginBtn:'Log in',signupBtn:'Create my account',nameReq:'Name and password (6+ characters) required.',created:'Account created. Confirm your email, then log in.',
+catalog:'Catalog',loan:'Loan',alerts:'Alerts',profile:'Profile',overview:'Overview',books:'Books',loans:'Loans',queue:'Queue',members:'Members',reports:'Reports',
+avail:'Available',outTo:'On loan · due {d}',reserved:'Reserved',resYou:'Reserved for you',borrow:'Borrow',pickup:'Pick up',request:'Request',cancel:'Cancel',back:'Back',ret:'Return',add:'Add',del:'Delete',search:'Search a title or an author',f_all:'All',f_avail:'Available',f_out:'On loan',f_mine:'My requests',
+borrowed:'Book borrowed. Enjoy your read!',queued:'You are in the queue.',returned:'Return recorded.',waiting:'{n} waiting',qpos:'Queue #{n}',nf:'Book not found.',none:'No results.',
+myLoan:'My loan',noLoan:'No active loan. Pick a book from the catalog.',span:'From {a} to {b}',left:'{n} days left',late:'{n} days overdue',elapsed:'{n}% of the loan period elapsed',myReq:'My requests',noReq:'No requests.',readyUntil:'Ready for you until {d}',inQ:'In the queue',
+notif:'Enable notifications',readAll:'Mark all as read',noAl:'No alerts.',
+addBook:'Add a book',title:'Title',author:'Author',cover:'Cover image (URL, optional)',desc:'Description (optional)',
+member:'Member',taken:'Borrowed',due:'Due',state:'Status',since:'Since',onGoing:'Ongoing',overdue:'Overdue',retOn:'Returned {d}',noLoans:'No loans.',emptyQ:'Queue is empty.',resUntil:'Reserved until {d}',
+sBooks:'Books',sAvail:'On shelf',sMem:'Members',sOut:'Loans',sLate:'Overdue',sQ:'In queue',
+distrib:'Book distribution',perMonth:'Loans per month',topBooks:'Most borrowed books',topMem:'Most active members',lateNow:'Overdue',noData:'No data.',noneF:'None.',gen:'Report generated on {d}.',pdf:'Export to PDF',
+total:'Total',current:'Current',ok:'Up to date',admin:'administrator',
+lang:'Language',theme:'Theme',light:'Light',dark:'Dark',install:'Install the app',iosTip:'On iPhone: tap Share, then “Add to Home Screen”.',logout:'Log out',updAvail:'A new version is available.',updBtn:'Update'}};
+const t=(k,o)=>{let s=T[L][k]||T.fr[k]||k;for(const x in o)s=s.replace('{'+x+'}',o[x]);return s};
+const P={book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>',user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',search:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/>',download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',refresh:'<path d="M23 4v6h-6M1 20v-6h6M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/>',sun:'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>',moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',grid:'<path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',chart:'<path d="M18 20V10M12 20V4M6 20v-6"/>',trash:'<path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',back:'<path d="M19 12H5M12 19l-7-7 7-7"/>',globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/>'};
+const ic=n=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${P[n]||''}</svg>`;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const loc=()=>L=='fr'?'fr-FR':'en-GB',fd=x=>new Date(x).toLocaleDateString(loc(),{day:'numeric',month:'short',year:'numeric'});
+const say=(m,g)=>{msg=m;good=!!g};
+const nav=p=>{location.hash='#/'+p};
+const setL=l=>{L=l;ls('lang',l);document.documentElement.lang=l;draw()};
+const setTh=x=>{th=x;ls('theme',x);document.documentElement.dataset.theme=x;draw()};
+async function call(fn,a){const{error}=await sb.rpc(fn,a);if(error){say(error.message);return false}return true}
+async function act(fn,a,m){if(await call(fn,a))say(m,1);draw()}
+const borrow=id=>act('borrow_book',{p_book:id},t('borrowed')),ask=id=>act('request_book',{p_book:id},t('queued')),giveBack=id=>act('return_book',{p_loan:id},t('returned'));
+async function leave(id){await sb.from('reservations').delete().eq('id',id);draw()}
+async function addBook(){const g=i=>$(i).value.trim();if(g('#bt')){const{error}=await sb.from('books').insert({title:g('#bt'),author:g('#ba')||null,cover_url:g('#bc')||null,description:g('#bd')||null});if(error)say(error.message)}draw()}
+async function delBook(id){const{error}=await sb.from('books').delete().eq('id',id);if(error)say(error.message);draw()}
+async function readAll(){await sb.from('notifications').update({read:true}).eq('user_id',me.id);draw()}
+function perm(){try{Notification.requestPermission().then(draw)}catch(e){draw()}}
+const iosTip=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!matchMedia('(display-mode:standalone)').matches;
+const canInst=()=>!!dip||iosTip;
+function inst(){if(dip){dip.prompt();dip.userChoice.then(()=>{dip=null;draw()})}else{say(t('iosTip'));draw()}}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dip=e;draw()});addEventListener('appinstalled',()=>{dip=null;draw()});
+function applyUpd(){if(updW)updW.postMessage({type:'SKIP_WAITING'})}
+if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').then(r=>{if(r.waiting&&navigator.serviceWorker.controller){updW=r.waiting;draw()}r.addEventListener('updatefound',()=>{const w=r.installing;w.addEventListener('statechange',()=>{if(w.state=='installed'&&navigator.serviceWorker.controller){updW=w;draw()}})})}));let rl=0;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!rl){rl=1;location.reload()}})}
+async function auth(){const em=$('#em').value.trim(),pw=$('#pw').value;let r;
+ if(location.hash=='#/inscription'){const nm=$('#nm').value.trim();if(!nm||pw.length<6){say(t('nameReq'));return draw()}
+  r=await sb.auth.signUp({email:em,password:pw,options:{data:{full_name:nm}}});
+  if(!r.error&&!r.data.session){say(t('created'),1);nav('connexion');return draw()}}
+ else r=await sb.auth.signInWithPassword({email:em,password:pw});
+ if(r.error){say(r.error.message);draw()}}
+const out=()=>sb.auth.signOut();
+sb.auth.onAuthStateChange((e,s)=>setTimeout(()=>{ready=true;if(s?.user){if(!me||me.id!=s.user.id)boot(s.user)}else{me=null;draw()}},0));
+async function boot(u){const{data}=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();
+ me=data||{id:u.id,role:'user',full_name:u.email};me.email=u.email;await sb.rpc('sweep');listen();draw()}
+function listen(){if(chan)sb.removeChannel(chan);
+ chan=sb.channel('n'+me.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+me.id},p=>{say(p.new.message,1);
+ try{if(Notification.permission=='granted')new Notification('USP-Dang Library',{body:p.new.message})}catch(e){}draw()}).subscribe()}
+const isAv=b=>!b.due_at&&!b.held;
+const badge=b=>b.due_at?`<span class="tag w">${t('outTo',{d:fd(b.due_at)})}</span>`:b.held&&!b.mine_hold?`<span class="tag w">${t('reserved')}</span>`:b.mine_hold?`<span class="tag">${t('resYou')}</span>`:`<span class="tag ok">${t('avail')}</span>`;
+const cover=(b,c='')=>`<div class="cv ${c}">${ic('book')}${b.cover_url?`<img src="${esc(b.cover_url)}" alt="" loading="lazy" onerror="this.remove()">`:''}</div>`;
+const act1=b=>{const can=!b.due_at&&(!b.held||b.mine_hold);return can?`<button class="p" onclick="event.stopPropagation();borrow('${b.id}')">${t(b.mine_hold?'pickup':'borrow')}</button>`:b.my_pos?`<span class="tag">${t('qpos',{n:b.my_pos})}</span>`:`<button onclick="event.stopPropagation();ask('${b.id}')">${t('request')}</button>`};
+const card=b=>`<div class="card bk" onclick="nav('livre/${b.id}')">${cover(b)}<div class="fx"><b>${esc(b.title)}</b><div class="sub">${esc(b.author||'')}${b.queue_count?' · '+t('waiting',{n:b.queue_count}):''}</div><div class="row" style="margin-top:8px">${badge(b)}${act1(b)}</div></div></div>`;
+async function getCat(){const{data}=await sb.rpc('catalog');CAT=data||[]}
+function list(){const q=Q.toLowerCase(),r=CAT.filter(b=>(!q||(b.title+' '+(b.author||'')).toLowerCase().includes(q))&&(F=='all'||(F=='avail'&&isAv(b))||(F=='out'&&b.due_at)||(F=='mine'&&(b.my_pos||b.mine_hold))));$('#list').innerHTML=r.map(card).join('')||`<div class="card sub">${t('none')}</div>`}
+function donut(ps){const C=2*Math.PI*40,n=ps.reduce((a,p)=>a+p.v,0),tot=n||1;let o=0;return`<svg viewBox="0 0 100 100" class="dn"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ort)" stroke-width="14"/>${ps.filter(p=>p.v).map(p=>{const l=p.v/tot*C,s=`<circle cx="50" cy="50" r="40" fill="none" stroke="${p.c}" stroke-width="14" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 50 50)"/>`;o+=l;return s}).join('')}<text x="50" y="56" text-anchor="middle" font-size="18" font-weight="800" fill="var(--tx)">${n}</text></svg>`}
+const bars=(v,lb)=>{const m=Math.max(...v,1);return`<div class="bars">${v.map((x,i)=>`<div class="bc"><span>${x}</span><i style="height:${x/m*100}px"></i><em style="font-style:normal">${lb[i]}</em></div>`).join('')}</div>`};
+async function stats(){const[d,l,q,p]=await Promise.all([sb.rpc('catalog'),sb.from('loans').select('*,books(title),profiles(full_name)'),sb.from('reservations').select('id'),sb.from('profiles').select('id').eq('role','user')]);
+ const B=d.data||[],Lo=l.data||[],now=new Date(),out=Lo.filter(x=>!x.returned_at),ms=[...Array(6)].map((_,i)=>{const x=new Date();x.setDate(1);x.setMonth(x.getMonth()-5+i);return x});
+ return{B,Lo,out,late:out.filter(x=>new Date(x.due_at)<now),nm:(p.data||[]).length,nq:(q.data||[]).length,av:B.filter(isAv).length,rs:B.filter(b=>!b.due_at&&b.held).length,ol:B.filter(b=>b.due_at).length,ms,cn:ms.map(m=>Lo.filter(x=>{const a=new Date(x.borrowed_at);return a.getMonth()==m.getMonth()&&a.getFullYear()==m.getFullYear()}).length)}}
+function dash(S,full){const st=(n,l)=>`<div><b>${n}</b>${t(l)}</div>`,top=f=>{const m={};S.Lo.forEach(x=>{const k=f(x);m[k]=(m[k]||0)+1});return Object.entries(m).sort((a,c)=>c[1]-a[1]).slice(0,5).map(e=>esc(e[0])+' — '+e[1]).join('<br>')||`<span class="sub">${t('noData')}</span>`};
+ return`<div class="stats">${st(S.B.length,'sBooks')}${st(S.av,'sAvail')}${st(S.nm,'sMem')}${st(S.out.length,'sOut')}${st(S.late.length,'sLate')}${st(S.nq,'sQ')}</div>
+<div class="g2"><div class="card"><b>${t('distrib')}</b><div class="row" style="justify-content:flex-start;gap:18px;margin-top:8px">${donut([{v:S.av,c:'var(--ok)'},{v:S.ol,c:'var(--or)'},{v:S.rs,c:'var(--wa)'}])}<div class="lg2"><span><i style="background:var(--ok)"></i>${t('avail')} (${S.av})</span><span><i style="background:var(--or)"></i>${t('f_out')} (${S.ol})</span><span><i style="background:var(--wa)"></i>${t('reserved')} (${S.rs})</span></div></div></div>
+<div class="card"><b>${t('perMonth')}</b>${bars(S.cn,S.ms.map(m=>m.toLocaleDateString(loc(),{month:'short'})))}</div></div>
+${full?`<div class="g2"><div class="card"><b>${t('topBooks')}</b><p>${top(x=>x.books?.title)}</p></div><div class="card"><b>${t('topMem')}</b><p>${top(x=>x.profiles?.full_name)}</p></div></div>`:''}
+<h2>${t('lateNow')}</h2><div class="card">${S.late.map(x=>esc(x.books?.title)+' — '+esc(x.profiles?.full_name)+' ('+fd(x.due_at)+')').join('<br>')||`<span class="sub">${t('noneF')}</span>`}</div>${full?`<p class="sub">${t('gen',{d:fd(new Date())})}</p>`:''}`}
+const empty=(k,c)=>`<tr><td colspan="${c}" class="sub">${t(k)}</td></tr>`;
+const views={
+async catalog(){await getCat();return`<div class="card sr">${ic('search')}<input id="q" value="${esc(Q)}" placeholder="${t('search')}" oninput="Q=this.value;list()"></div><div class="chips">${['all','avail','out','mine'].map(f=>`<button class="${F==f?'on':''}" onclick="F='${f}';draw()">${t('f_'+f)}</button>`).join('')}</div><div id="list"></div>`},
+async book(id){await getCat();const b=CAT.find(x=>x.id==id);if(!b)return`<div class="card sub">${t('nf')}</div>`;
+ return`<button class="g" onclick="history.length>1?history.back():nav('')">${ic('back')} ${t('back')}</button><div class="card"><div class="row" style="justify-content:flex-start;align-items:flex-start;gap:16px">${cover(b,'lg')}<div class="fx"><h1>${esc(b.title)}</h1><div class="sub">${esc(b.author||'')}</div><p>${badge(b)}</p>${b.queue_count?`<div class="sub">${t('waiting',{n:b.queue_count})}</div>`:''}${b.description?`<p>${esc(b.description)}</p>`:''}<div style="margin-top:12px">${act1(b)}</div></div></div></div>`},
+async mine(){const{data:l}=await sb.from('loans').select('*,books(title)').eq('user_id',me.id).is('returned_at',null).maybeSingle();
+ const{data:rs}=await sb.from('reservations').select('*,books(title)').eq('user_id',me.id);let h;
+ if(l){const a=new Date(l.borrowed_at),d=new Date(l.due_at),p=Math.min(100,Math.max(0,(Date.now()-a)/(d-a)*100)),n=Math.ceil((d-Date.now())/D),c=n<0?'e':n<=3?'w':'';
+  h=`<div class="card"><div class="row"><b>${esc(l.books.title)}</b><span class="tag ${c}">${n<0?t('late',{n:-n}):t('left',{n})}</span></div><div class="sub">${t('span',{a:fd(a),b:fd(d)})}</div><div class="bar"><i class="${c}" style="width:${p}%"></i></div><div class="sub">${t('elapsed',{n:Math.round(p)})}</div></div>`}
+ else h=`<div class="card sub">${t('noLoan')}</div>`;
+ return h+`<h2>${t('myReq')}</h2>`+((rs||[]).map(r=>`<div class="card row"><div><b>${esc(r.books.title)}</b><div class="sub">${r.hold_until?t('readyUntil',{d:fd(r.hold_until)}):t('inQ')}</div></div><button class="g" onclick="leave('${r.id}')">${t('cancel')}</button></div>`).join('')||`<div class="sub">${t('noReq')}</div>`)},
+async alerts(){const{data}=await sb.from('notifications').select('*').eq('user_id',me.id).order('created_at',{ascending:false}).limit(40);
+ return`<div class="row"><button onclick="perm()">${ic('bell')} ${t('notif')}</button><button class="g" onclick="readAll()">${t('readAll')}</button></div>`+((data||[]).map(n=>`<div class="card" style="${n.read?'opacity:.6':''}">${esc(n.message)}<div class="sub">${fd(n.created_at)}</div></div>`).join('')||`<div class="card sub">${t('noAl')}</div>`)},
+async profile(){return`<div class="card"><div class="row" style="justify-content:flex-start"><div class="av">${esc((me.full_name||'?')[0].toUpperCase())}</div><div><b>${esc(me.full_name)}</b><div class="sub">${esc(me.email||'')}${me.role=='admin'?' · '+t('admin'):''}</div></div></div></div>
+<div class="card"><div class="row"><span>${ic('globe')} ${t('lang')}</span><div class="seg2">${['fr','en'].map(l=>`<button class="${L==l?'on':''}" onclick="setL('${l}')">${l.toUpperCase()}</button>`).join('')}</div></div><div class="row" style="margin-top:12px"><span>${ic('sun')} ${t('theme')}</span><div class="seg2"><button class="${th=='light'?'on':''}" onclick="setTh('light')">${t('light')}</button><button class="${th=='dark'?'on':''}" onclick="setTh('dark')">${t('dark')}</button></div></div></div>
+${canInst()?`<button class="p" onclick="inst()">${ic('download')} ${t('install')}</button> `:''}<button class="g" onclick="out()">${ic('logout')} ${t('logout')}</button>`},
+async overview(){return dash(await stats(),0)},
+async reports(){return`<div class="row noprint"><h2 style="margin:0">${t('reports')}</h2><button class="p" onclick="print()">${ic('download')} ${t('pdf')}</button></div>`+dash(await stats(),1)},
+async books(){await getCat();return`<div class="card"><b>${t('addBook')}</b><input id="bt" placeholder="${t('title')}"><input id="ba" placeholder="${t('author')}"><input id="bc" placeholder="${t('cover')}"><textarea id="bd" rows="2" placeholder="${t('desc')}"></textarea><button class="p" onclick="addBook()">${ic('book')} ${t('add')}</button></div>`+CAT.map(b=>`<div class="card bk" style="cursor:default">${cover(b)}<div class="fx"><b>${esc(b.title)}</b><div class="sub">${esc(b.author||'')}</div><div class="row" style="margin-top:8px">${badge(b)}<button class="g" ${b.due_at?'disabled':''} onclick="delBook('${b.id}')">${ic('trash')}</button></div></div></div>`).join('')},
+async loans(){const{data}=await sb.from('loans').select('*,books(title),profiles(full_name)').order('borrowed_at',{ascending:false});
+ return`<div class="card tw"><table><tr><th>${t('books')}</th><th>${t('member')}</th><th>${t('taken')}</th><th>${t('due')}</th><th>${t('state')}</th><th></th></tr>`+((data||[]).map(l=>`<tr><td>${esc(l.books?.title)}</td><td>${esc(l.profiles?.full_name)}</td><td>${fd(l.borrowed_at)}</td><td>${fd(l.due_at)}</td><td>${l.returned_at?t('retOn',{d:fd(l.returned_at)}):new Date(l.due_at)<new Date()?`<span class="tag e">${t('overdue')}</span>`:`<span class="tag w">${t('onGoing')}</span>`}</td><td>${l.returned_at?'':`<button onclick="giveBack('${l.id}')">${t('ret')}</button>`}</td></tr>`).join('')||empty('noLoans',6))+'</table></div>'},
+async queue(){const{data}=await sb.from('reservations').select('*,books(title),profiles(full_name)').order('created_at');
+ return`<div class="card tw"><table><tr><th>${t('books')}</th><th>${t('member')}</th><th>${t('since')}</th><th>${t('state')}</th></tr>`+((data||[]).map(q=>`<tr><td>${esc(q.books?.title)}</td><td>${esc(q.profiles?.full_name)}</td><td>${fd(q.created_at)}</td><td>${q.hold_until?t('resUntil',{d:fd(q.hold_until)}):t('inQ')}</td></tr>`).join('')||empty('emptyQ',4))+'</table></div>'},
+async members(){const[p,l]=await Promise.all([sb.from('profiles').select('*').order('full_name'),sb.from('loans').select('user_id,returned_at,due_at,books(title)')]);const Lo=l.data||[];
+ return`<div class="card tw"><table><tr><th>${t('member')}</th><th>${t('email')}</th><th>${t('total')}</th><th>${t('current')}</th><th>${t('state')}</th></tr>`+((p.data||[]).map(m=>{const mine=Lo.filter(x=>x.user_id==m.id),c=mine.find(x=>!x.returned_at);return`<tr><td>${esc(m.full_name)}${m.role=='admin'?' <span class="tag">admin</span>':''}</td><td>${esc(m.email||'')}</td><td>${mine.length}</td><td>${c?esc(c.books?.title):'—'}</td><td>${c&&new Date(c.due_at)<new Date()?`<span class="tag e">${t('overdue')}</span>`:`<span class="tag ok">${t('ok')}</span>`}</td></tr>`}).join('')||empty('noData',5))+'</table></div>'}};
+const route=()=>location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
+const pick=p=>p[0]=='admin'?[({livres:'books',emprunts:'loans',file:'queue',membres:'members',rapports:'reports'})[p[1]]||'overview']:p[0]=='livre'?['book',p[1]]:[({emprunt:'mine',alertes:'alerts',profil:'profile'})[p[0]]||'catalog'];
+const tools=()=>`<div class="tl">${canInst()?`<button class="g ib" title="${t('install')}" onclick="inst()">${ic('download')}</button>`:''}<button class="g ib" onclick="setL('${L=='fr'?'en':'fr'}')">${L=='fr'?'EN':'FR'}</button><button class="g ib" onclick="setTh('${th=='dark'?'light':'dark'}')">${ic(th=='dark'?'sun':'moon')}</button>${me?.role=='admin'?`<button class="g ib" onclick="nav('profil')">${ic('user')}</button>`:''}</div>`;
+async function draw(){const a=$('#app'),m=msg,g=good;msg='';if(!ready){a.innerHTML='';return}const p=route();
+ if(!me){const reg=p[0]=='inscription';a.innerHTML=`<div class="appbar"><span></span>${tools()}</div><div class="auth"><img src="assets/icons/logo.png" alt="USP-Dang Library"><p class="sub">${t('tagline')}</p><div class="card"><div class="seg"><button class="${reg?'':'on'}" onclick="nav('connexion')">${t('login')}</button><button class="${reg?'on':''}" onclick="nav('inscription')">${t('signup')}</button></div>${reg?`<input id="nm" placeholder="${t('name')}" autocomplete="name">`:''}<input id="em" type="email" placeholder="${t('email')}" autocomplete="email"><input id="pw" type="password" placeholder="${t('pwd')}" autocomplete="current-password"><div class="msg ${g?'ok':''}">${esc(m)}</div><button class="p" style="width:100%" onclick="auth()">${reg?t('signupBtn'):t('loginBtn')}</button></div></div>`;return}
+ const adm=me.role=='admin';
+ if(['connexion','inscription'].includes(p[0])||(adm&&p[0]!='admin'&&p[0]!='profil')||(!adm&&p[0]=='admin')){location.replace('#/'+(adm?'admin':''));return}
+ const [v,arg]=pick(p),cur=p.join('/');let un=0;
+ if(!adm){const r=await sb.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',me.id).eq('read',false);un=r.count||0}
+ const items=adm?[['admin','overview','grid'],['admin/livres','books','book'],['admin/emprunts','loans','list'],['admin/file','queue','clock'],['admin/membres','members','users'],['admin/rapports','reports','chart']]:[['','catalog','book'],['emprunt','loan','clock'],['alertes','alerts','bell'],['profil','profile','user']];
+ const body=await views[v](arg);
+ a.innerHTML=`${updW?`<div class="upd"><span>${ic('refresh')} ${t('updAvail')}</span><button onclick="applyUpd()">${t('updBtn')}</button></div>`:''}<div class="appbar"><div class="logo"><img src="assets/icons/logo.png" alt=""><div><h1>USP-Dang Library</h1><div class="sub">${esc(me.full_name)}${adm?' · '+t('admin'):''}</div></div></div>${tools()}</div><div class="msg ${g?'ok':''}">${esc(m)}</div>${body}<nav class="bn">${items.map(i=>`<button class="${i[0]==cur||(i[0]==''&&p[0]=='livre')?'on':''}" onclick="nav('${i[0]}')">${ic(i[2])}<span>${t(i[1])}</span>${i[1]=='alerts'&&un?`<b class="dot">${un}</b>`:''}</button>`).join('')}</nav>`;
+ if(v=='catalog')list()}
+addEventListener('hashchange',draw);draw();
+</script></body></html>
