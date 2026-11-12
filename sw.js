@@ -1,4 +1,4 @@
-const C='usp-v2',A=['./','index.html','manifest.json','assets/icons/icon-192.png','assets/icons/logo.png'];
+const C='usp-v3',A=['./','index.html','manifest.json','assets/icons/icon-192.png','assets/icons/logo.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A))));
 self.addEventListener('message',e=>{if(e.data&&e.data.type=='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
