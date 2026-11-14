@@ -3,13 +3,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F28C38">
 <link rel="manifest" href="manifest.json"><link rel="icon" href="assets/icons/icon-192.png"><link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/supabase.js" as="script">
 <title>USP-Dang Library</title>
 <style>
 :root{--or:#F28C38;--or2:#E8741A;--ort:#FFF1E4;--bg:#FFFAF5;--sf:#fff;--tx:#2B2118;--mu:#8A7B6E;--bd:#F3E4D6;--wa:#D9480F;--er:#C92A2A;--ok:#2F9E6B;--okt:#E6F6EE;--wat:#FFF4E5;--ert:#FDECEC;--sh:0 6px 22px rgba(242,140,56,.12)}
 html[data-theme=dark]{--bg:#1E1612;--sf:#2A201A;--tx:#F6EDE4;--mu:#B3A294;--bd:#3B2E26;--ort:#3A2718;--or:#F59A4A;--or2:#F7A95F;--wa:#F2994A;--er:#F26B6B;--ok:#4CC38A;--okt:#17372A;--wat:#3F2A16;--ert:#42201F;--sh:0 6px 22px rgba(0,0,0,.35)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;padding-top:env(safe-area-inset-top)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding-top:env(safe-area-inset-top)}
 main{max-width:860px;margin:0 auto;padding:14px 16px calc(96px + env(safe-area-inset-bottom))}
 h1{font-size:19px;margin:0;font-weight:800}h2{font-size:16px;margin:22px 0 8px}p{margin:8px 0}
 .sub{color:var(--mu);font-size:13px}.fx{flex:1;min-width:0}
@@ -48,16 +48,18 @@ button.g{border-color:transparent;background:none;color:var(--mu)}button.ib{padd
 .seg2{display:flex;background:var(--ort);border-radius:999px;padding:3px}.seg2 button{border-color:transparent;background:none;padding:5px 14px}.seg2 button.on{background:var(--or);color:#fff}
 .av{width:48px;height:48px;border-radius:50%;background:var(--or);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px}
 .upd{position:sticky;top:0;z-index:30;background:var(--or);color:#fff;border-radius:14px;padding:8px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}.upd button{background:#fff;color:var(--or2);border:0;font-weight:700}
+.sk{height:96px;border:0;background:linear-gradient(90deg,var(--ort),var(--bd),var(--ort));background-size:200% 100%;animation:sh 1.2s infinite linear}@keyframes sh{to{background-position:-200% 0}}
 @media print{.bn,.appbar,.noprint,.upd,button{display:none!important}main{margin:0!important;padding:0!important;max-width:none}body{background:#fff;color:#000}.card,.stats div{box-shadow:none;break-inside:avoid}}
-</style></head><body><main id="app"></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</style></head><body><main id="app"><div class="appbar"><div class="logo"><img src="assets/icons/logo-sm.webp" alt="" width="44" height="44"><h1>USP-Dang Library</h1></div></div><div class="card sk"></div><div class="card sk"></div><div class="card sk"></div></main>
+<script src="assets/supabase.js"></script>
 <script>
 const CFG={url:'https://zvhmiifzjqvclealnapo.supabase.co',key:'sb_publishable_1WomU5BRq_NLyUq5upaA5g_8WvDDq1E'};
+document.head.append(Object.assign(document.createElement('link'),{rel:'preconnect',href:CFG.url}));
 const sb=supabase.createClient(CFG.url,CFG.key);
 const $=s=>document.querySelector(s),D=864e5;
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){}};
 let L=ls('lang')||((navigator.language||'fr').slice(0,2)=='en'?'en':'fr'),th=ls('theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-let me=null,msg='',good=false,chan=null,ready=false,CAT=[],Q='',QA='',EB=null,F='all',dip=null,updW=null;
+let me=null,msg='',good=false,chan=null,ready=false,CAT=[],Q='',QA='',EB=null,F='all',DT=0,SIG='',shown='',HC={},dip=null,updW=null;
 document.documentElement.dataset.theme=th;document.documentElement.lang=L;
 const T={fr:{reqSent:'Demande envoyée',reqWait:'En attente de validation par l’administrateur : le décompte démarre à la validation.',approve:'Valider',reject:'Refuser',requests:'Demandes',noReqs:'Aucune demande en attente.',approved:'Demande validée : l’emprunt commence.',rejected:'Demande refusée.',reqOn:'Demandée le',busyInfo:'Vous avez une demande ou un emprunt en cours (ou déjà emprunté ce mois-ci) : vous pouvez rejoindre les files d’attente en attendant.',joinQ:'Rejoindre la file',sReq:'Demandes',availN:'Disponible · {n}/{c}',lent:'Empruntés',copies:'Exemplaires en stock',stockOf:'{f} dispo. sur {c}',save:'Enregistrer',edit:'Modifier',cancelEdit:'Annuler la modification',dup:'Ce livre existe déjà : modifiez-le pour changer son stock.',saved:'Livre enregistré.',coverFile:'Ou choisir une image',confirmDel:'Supprimer ce livre et son historique d’emprunts ?',editing:'Modifier le livre',tagline:'Empruntez · Lisez · Rendez',login:'Connexion',signup:'Créer un compte',name:'Nom complet',email:'E-mail',pwd:'Mot de passe',loginBtn:'Se connecter',signupBtn:'Créer mon compte',nameReq:'Nom et mot de passe (6 caractères min.) requis.',created:'Compte créé. Confirmez votre e-mail, puis connectez-vous.',
 catalog:'Catalogue',loan:'Emprunt',alerts:'Alertes',profile:'Profil',overview:'Aperçu',books:'Livres',loans:'Emprunts',queue:'File',members:'Membres',reports:'Rapports',
@@ -89,15 +91,16 @@ const ic=n=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColo
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const loc=()=>L=='fr'?'fr-FR':'en-GB',fd=x=>new Date(x).toLocaleDateString(loc(),{day:'numeric',month:'short',year:'numeric'});
 const say=(m,g)=>{msg=m;good=!!g};
+const rd=()=>{HC={};draw(true)};
 const nav=p=>{location.hash='#/'+p};
-const setL=l=>{L=l;ls('lang',l);document.documentElement.lang=l;draw()};
-const setTh=x=>{th=x;ls('theme',x);document.documentElement.dataset.theme=x;draw()};
+const setL=l=>{L=l;ls('lang',l);document.documentElement.lang=l;rd()};
+const setTh=x=>{th=x;ls('theme',x);document.documentElement.dataset.theme=x;rd()};
 async function call(fn,a){const{error}=await sb.rpc(fn,a);if(error){say(error.message);return false}return true}
-async function act(fn,a,m){if(await call(fn,a))say(m,1);draw()}
+async function act(fn,a,m){if(await call(fn,a))say(m,1);rd()}
 const borrow=id=>act('request_borrow',{p_book:id},t('borrowed')),valid=id=>act('approve_request',{p_req:id},t('approved')),refuse=id=>act('reject_request',{p_req:id},t('rejected')),ask=id=>act('request_book',{p_book:id},t('queued')),giveBack=id=>act('return_book',{p_loan:id},t('returned'));
-async function leave(id){await sb.from('reservations').delete().eq('id',id);draw()}
-async function delBook(id){if(!confirm(t('confirmDel')))return;const{error}=await sb.from('books').delete().eq('id',id);if(error)say(error.message);draw()}
-async function readAll(){await sb.from('notifications').update({read:true}).eq('user_id',me.id);draw()}
+async function leave(id){await sb.from('reservations').delete().eq('id',id);rd()}
+async function delBook(id){if(!confirm(t('confirmDel')))return;const{error}=await sb.from('books').delete().eq('id',id);if(error)say(error.message);rd()}
+async function readAll(){await sb.from('notifications').update({read:true}).eq('user_id',me.id);refreshDot();rd()}
 function perm(){try{Notification.requestPermission().then(draw)}catch(e){draw()}}
 const iosTip=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!matchMedia('(display-mode:standalone)').matches;
 const canInst=()=>!!dip||iosTip;
@@ -112,15 +115,20 @@ async function auth(){const em=$('#em').value.trim(),pw=$('#pw').value;let r;
  else r=await sb.auth.signInWithPassword({email:em,password:pw});
  if(r.error){say(r.error.message);draw()}}
 const out=()=>sb.auth.signOut();
-sb.auth.onAuthStateChange((e,s)=>setTimeout(()=>{ready=true;if(s?.user){if(!me||me.id!=s.user.id)boot(s.user)}else{me=null;draw()}},0));
-async function boot(u){const{data}=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();
- me=data||{id:u.id,role:'user',full_name:u.email};me.email=u.email;await sb.rpc('sweep');listen();draw()}
+sb.auth.onAuthStateChange((e,s)=>setTimeout(()=>{ready=true;if(s?.user){if(!me||me.id!=s.user.id)boot(s.user)}else{me=null;HC={};shown='';SIG='';ls('prof','');draw()}},0));
+async function boot(u){let c=null;try{c=JSON.parse(ls('prof'))}catch(e){}
+ if(c&&c.id==u.id){me=c;listen();draw()}
+ const{data}=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();
+ const n=data||{id:u.id,role:'user',full_name:u.email};n.email=u.email;ls('prof',JSON.stringify(n));
+ const ch=!me||me.role!=n.role||me.full_name!=n.full_name;me=n;
+ if(ch){listen();HC={};draw()}
+ sb.rpc('sweep').then(()=>{refreshDot();rd()})}
 function listen(){if(chan)sb.removeChannel(chan);
  chan=sb.channel('n'+me.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+me.id},p=>{say(p.new.message,1);
- try{if(Notification.permission=='granted')new Notification('USP-Dang Library',{body:p.new.message})}catch(e){}draw()}).subscribe()}
+ try{if(Notification.permission=='granted')new Notification('USP-Dang Library',{body:p.new.message})}catch(e){}refreshDot();rd()}).subscribe()}
 const isAv=b=>b.free>0;
 const badge=b=>b.mine_hold?`<span class="tag">${t('resYou')}</span>`:b.free>0?`<span class="tag ok">${t('availN',{n:b.free,c:b.copies})}</span>`:b.next_due?`<span class="tag w">${t('outTo',{d:fd(b.next_due)})}</span>`:`<span class="tag w">${t('reserved')}</span>`;
-const cover=(b,c='')=>`<div class="cv ${c}">${ic('book')}${b.cover_url?`<img src="${esc(b.cover_url)}" alt="" loading="lazy" onerror="this.remove()">`:''}</div>`;
+const cover=(b,c='')=>`<div class="cv ${c}">${ic('book')}${b.cover_url?`<img src="${esc(b.cover_url)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:''}</div>`;
 const act1=b=>{const bt=(f,k,c='')=>`<button class="${c}" onclick="event.stopPropagation();${f}('${b.id}')">${t(k)}</button>`;
  if(b.mine_req)return`<button disabled>${t('reqSent')}</button>`;
  if(b.mine_hold)return b.busy?'':bt('borrow','pickup','p');
@@ -142,11 +150,11 @@ async function saveBook(){const g=i=>$(i).value.trim(),fail=m=>{$('#bmsg').textC
  if(!title)return fail(t('title'));
  if(CAT.some(b=>b.id!=EB&&norm(b.title)==norm(title)&&norm(b.author)==norm(au)))return fail(t('dup'));
  let cu=g('#bc')||null;const fi=$('#bi').files[0];
- if(fi){try{const bl=await compress(fi),nm=Date.now()+'.jpg',{error}=await sb.storage.from('covers').upload(nm,bl,{contentType:'image/jpeg'});if(error)return fail(error.message);cu=sb.storage.from('covers').getPublicUrl(nm).data.publicUrl}catch(e){return fail(e.message)}}
+ if(fi){try{const bl=await compress(fi),nm=Date.now()+'.jpg',{error}=await sb.storage.from('covers').upload(nm,bl,{contentType:'image/jpeg',cacheControl:'31536000'});if(error)return fail(error.message);cu=sb.storage.from('covers').getPublicUrl(nm).data.publicUrl}catch(e){return fail(e.message)}}
  const row={title,author:au,copies:Math.max(0,parseInt(g('#bn'))||0),description:g('#bd')||null,cover_url:cu};
  const{error}=EB?await sb.from('books').update(row).eq('id',EB):await sb.from('books').insert(row);
  if(error)return fail(error.code=='23505'?t('dup'):error.message);
- EB=null;say(t('saved'),1);draw()}
+ EB=null;say(t('saved'),1);bform();rd()}
 function donut(ps){const C=2*Math.PI*40,n=ps.reduce((a,p)=>a+p.v,0),tot=n||1;let o=0;return`<svg viewBox="0 0 100 100" class="dn"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ort)" stroke-width="14"/>${ps.filter(p=>p.v).map(p=>{const l=p.v/tot*C,s=`<circle cx="50" cy="50" r="40" fill="none" stroke="${p.c}" stroke-width="14" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 50 50)"/>`;o+=l;return s}).join('')}<text x="50" y="56" text-anchor="middle" font-size="18" font-weight="800" fill="var(--tx)">${n}</text></svg>`}
 const bars=(v,lb)=>{const m=Math.max(...v,1);return`<div class="bars">${v.map((x,i)=>`<div class="bc"><span>${x}</span><i style="height:${x/m*100}px"></i><em style="font-style:normal">${lb[i]}</em></div>`).join('')}</div>`};
 async function stats(){const[d,l,q,p,rq]=await Promise.all([sb.rpc('catalog'),sb.from('loans').select('*,books(title),profiles(full_name)'),sb.from('reservations').select('id'),sb.from('profiles').select('id').eq('role','user'),sb.from('borrow_requests').select('id')]);
@@ -188,16 +196,26 @@ async members(){const[p,l]=await Promise.all([sb.from('profiles').select('*').or
  return`<div class="card tw"><table><tr><th>${t('member')}</th><th>${t('email')}</th><th>${t('total')}</th><th>${t('current')}</th><th>${t('state')}</th></tr>`+((p.data||[]).map(m=>{const mine=Lo.filter(x=>x.user_id==m.id),c=mine.find(x=>!x.returned_at);return`<tr><td>${esc(m.full_name)}${m.role=='admin'?' <span class="tag">admin</span>':''}</td><td>${esc(m.email||'')}</td><td>${mine.length}</td><td>${c?esc(c.books?.title):'—'}</td><td>${c&&new Date(c.due_at)<new Date()?`<span class="tag e">${t('overdue')}</span>`:`<span class="tag ok">${t('ok')}</span>`}</td></tr>`}).join('')||empty('noData',5))+'</table></div>'}};
 const route=()=>location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
 const pick=p=>p[0]=='admin'?[({demandes:'requests',livres:'books',emprunts:'loans',file:'queue',membres:'members',rapports:'reports'})[p[1]]||'overview']:p[0]=='livre'?['book',p[1]]:[({emprunt:'mine',alertes:'alerts',profil:'profile'})[p[0]]||'catalog'];
+const items=adm=>adm?[['admin','overview','grid'],['admin/demandes','requests','check'],['admin/livres','books','book'],['admin/emprunts','loans','list'],['admin/file','queue','clock'],['admin/membres','members','users'],['admin/rapports','reports','chart']]:[['','catalog','book'],['emprunt','loan','clock'],['alertes','alerts','bell'],['profil','profile','user']];
 const tools=()=>`<div class="tl">${canInst()?`<button class="g ib" title="${t('install')}" onclick="inst()">${ic('download')}</button>`:''}<button class="g ib" onclick="setL('${L=='fr'?'en':'fr'}')">${L=='fr'?'EN':'FR'}</button><button class="g ib" onclick="setTh('${th=='dark'?'light':'dark'}')">${ic(th=='dark'?'sun':'moon')}</button>${me?.role=='admin'?`<button class="g ib" onclick="nav('profil')">${ic('user')}</button>`:''}</div>`;
-async function draw(){const a=$('#app'),m=msg,g=good;msg='';if(!ready){a.innerHTML='';return}const p=route();
- if(!me){const reg=p[0]=='inscription';a.innerHTML=`<div class="appbar"><span></span>${tools()}</div><div class="auth"><img src="assets/icons/logo.png" alt="USP-Dang Library"><p class="sub">${t('tagline')}</p><div class="card"><div class="seg"><button class="${reg?'':'on'}" onclick="nav('connexion')">${t('login')}</button><button class="${reg?'on':''}" onclick="nav('inscription')">${t('signup')}</button></div>${reg?`<input id="nm" placeholder="${t('name')}" autocomplete="name">`:''}<input id="em" type="email" placeholder="${t('email')}" autocomplete="email"><input id="pw" type="password" placeholder="${t('pwd')}" autocomplete="current-password"><div class="msg ${g?'ok':''}">${esc(m)}</div><button class="p" style="width:100%" onclick="auth()">${reg?t('signupBtn'):t('loginBtn')}</button></div></div>`;return}
+const authHTML=(p,m,g)=>{const reg=p[0]=='inscription';return`<div class="appbar"><span></span>${tools()}</div><div class="auth"><img src="assets/icons/logo.webp" alt="USP-Dang Library" width="150" height="150"><p class="sub">${t('tagline')}</p><div class="card"><div class="seg"><button class="${reg?'':'on'}" onclick="nav('connexion')">${t('login')}</button><button class="${reg?'on':''}" onclick="nav('inscription')">${t('signup')}</button></div>${reg?`<input id="nm" placeholder="${t('name')}" autocomplete="name">`:''}<input id="em" type="email" placeholder="${t('email')}" autocomplete="email"><input id="pw" type="password" placeholder="${t('pwd')}" autocomplete="current-password"><div class="msg ${g?'ok':''}">${esc(m)}</div><button class="p" style="width:100%" onclick="auth()">${reg?t('signupBtn'):t('loginBtn')}</button></div></div>`};
+const shell=adm=>`${updW?`<div class="upd"><span>${ic('refresh')} ${t('updAvail')}</span><button onclick="applyUpd()">${t('updBtn')}</button></div>`:''}<div class="appbar"><div class="logo"><img src="assets/icons/logo-sm.webp" alt="" width="44" height="44"><div><h1>USP-Dang Library</h1><div class="sub">${esc(me.full_name)}${adm?' · '+t('admin'):''}</div></div></div>${tools()}</div><div class="msg" id="msgb"></div><div id="b"></div><nav class="bn">${items(adm).map(i=>`<button data-k="${i[0]}" onclick="nav('${i[0]}')">${ic(i[2])}<span>${t(i[1])}</span>${i[1]=='alerts'||i[1]=='requests'?'<b class="dot" hidden></b>':''}</button>`).join('')}</nav>`;
+async function refreshDot(){if(!me)return;const q=me.role=='admin'?sb.from('borrow_requests').select('id',{count:'exact',head:true}):sb.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',me.id).eq('read',false),r=await q,d=$('.dot');if(d){d.textContent=r.count||'';d.hidden=!r.count}}
+function hook(v){if(v=='catalog')list();if(v=='books'){if(!$('#bf').innerHTML)bform();alist()}}
+const SK='<div class="card sk"></div><div class="card sk"></div><div class="card sk"></div>';
+async function draw(force){const a=$('#app'),m=msg,g=good;msg='';if(!ready)return;const p=route(),my=++DT;
+ if(!me){SIG='';shown='';a.innerHTML=authHTML(p,m,g);return}
  const adm=me.role=='admin';
  if(['connexion','inscription'].includes(p[0])||(adm&&p[0]!='admin'&&p[0]!='profil')||(!adm&&p[0]=='admin')){location.replace('#/'+(adm?'admin':''));return}
- const [v,arg]=pick(p),cur=p.join('/');let un=0;
- if(!adm){const r=await sb.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',me.id).eq('read',false);un=r.count||0}else{const r=await sb.from('borrow_requests').select('id',{count:'exact',head:true});un=r.count||0}
- const items=adm?[['admin','overview','grid'],['admin/demandes','requests','check'],['admin/livres','books','book'],['admin/emprunts','loans','list'],['admin/file','queue','clock'],['admin/membres','members','users'],['admin/rapports','reports','chart']]:[['','catalog','book'],['emprunt','loan','clock'],['alertes','alerts','bell'],['profil','profile','user']];
- const body=await views[v](arg);
- a.innerHTML=`${updW?`<div class="upd"><span>${ic('refresh')} ${t('updAvail')}</span><button onclick="applyUpd()">${t('updBtn')}</button></div>`:''}<div class="appbar"><div class="logo"><img src="assets/icons/logo.png" alt=""><div><h1>USP-Dang Library</h1><div class="sub">${esc(me.full_name)}${adm?' · '+t('admin'):''}</div></div></div>${tools()}</div><div class="msg ${g?'ok':''}">${esc(m)}</div>${body}<nav class="bn">${items.map(i=>`<button class="${i[0]==cur||(i[0]==''&&p[0]=='livre')?'on':''}" onclick="nav('${i[0]}')">${ic(i[2])}<span>${t(i[1])}</span>${(i[1]=='alerts'||i[1]=='requests')&&un?`<b class="dot">${un}</b>`:''}</button>`).join('')}</nav>`;
- if(v=='catalog')list();if(v=='books'){bform();alist()}}
-addEventListener('hashchange',draw);draw();
+ const[v,arg]=pick(p),cur=p.join('/'),sig=[me.id,adm,L,th,!!dip,!!updW].join();let fresh=false;
+ if(sig!=SIG){a.innerHTML=shell(adm);SIG=sig;shown='';fresh=true}
+ const mb=$('#msgb');mb.className='msg'+(g?' ok':'');mb.textContent=m;
+ document.querySelectorAll('.bn button').forEach(b=>b.classList.toggle('on',b.dataset.k==cur||(b.dataset.k==''&&p[0]=='livre')));
+ const key=v+'/'+(arg||''),c=!force&&HC[key];
+ if(c){if(c!==shown){$('#b').innerHTML=c;shown=c}hook(v)}else if(!force||!shown){$('#b').innerHTML=SK;shown=SK}
+ if(force||fresh)refreshDot();
+ let html;try{html=await views[v](arg)}catch(e){html=`<div class="card sub">${esc(e.message)}</div>`}
+ if(my!=DT)return;
+ HC[key]=html;if(html!==shown){$('#b').innerHTML=html;shown=html}hook(v)}
+addEventListener('hashchange',()=>draw());draw();
 </script></body></html>
