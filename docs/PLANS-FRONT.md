@@ -13,7 +13,7 @@ Méthode (comme ZTF Imitators) : structure → design → icônes → fonctionna
 | Membre | `#/alertes` | Notifications |
 | Membre | `#/profil` | Compte, langue, thème, installer l'app |
 | Admin | `#/admin` | Vue d'ensemble (chiffres, retards, graphes) |
-| Admin | `#/admin/livres` · `/emprunts` · `/file` · `/membres` · `/rapports` | Gestion et rapports |
+| Admin | `#/admin/demandes` · `/livres` · `/emprunts` · `/membres` · `/rapports` | Gestion et rapports |
 
 Navigation membre : barre basse 4 onglets (Catalogue · Emprunt · Alertes · Profil), pastille sur Alertes.
 Navigation admin : barre latérale sur ordinateur, onglets défilants sur mobile.

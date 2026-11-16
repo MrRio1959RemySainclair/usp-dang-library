@@ -1,4 +1,4 @@
-const C='usp-v5',A=['./','index.html','manifest.json','assets/supabase.js','assets/icons/logo.webp','assets/icons/logo-sm.webp','assets/icons/icon-192.png'];
+const C='usp-v6',A=['./','index.html','manifest.json','assets/supabase.js','assets/icons/logo.webp','assets/icons/logo-sm.webp','assets/icons/icon-192.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A.map(u=>new Request(u,{cache:'reload'}))))));
 self.addEventListener('message',e=>{if(e.data&&e.data.type=='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
