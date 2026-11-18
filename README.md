@@ -9,4 +9,4 @@ PWA de gestion de bibliothèque (Supabase + Netlify).
 
 Plans du front : `docs/PLANS-FRONT.md`. Logo et icônes PWA : `assets/icons/`. Couvertures : `assets/covers/` (le champ `cover_url` d'un livre accepte un chemin relatif ou une URL).
 
-Ordre des scripts SQL : `schema.sql` → `migration_v3.sql` → `migration_v4.sql` (base v1 : `migration_v2.sql` → v3 → v4 ; base v3 : `migration_v4.sql` seul).
+Ordre des scripts SQL : `schema.sql` → `migration_v3.sql` → `migration_v4.sql` → `migration_v5_perf.sql` → `migration_v6.sql` (base v1 : `migration_v2.sql` → v3 → v4 ; base v3 : `migration_v4.sql` seul).
