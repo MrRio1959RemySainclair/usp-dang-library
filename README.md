@@ -10,3 +10,7 @@ PWA de gestion de bibliothèque (Supabase + Netlify).
 Plans du front : `docs/PLANS-FRONT.md`. Logo et icônes PWA : `assets/icons/`. Couvertures : `assets/covers/` (le champ `cover_url` d'un livre accepte un chemin relatif ou une URL).
 
 Ordre des scripts SQL : `schema.sql` → `migration_v3.sql` → `migration_v4.sql` → `migration_v5_perf.sql` → `migration_v6.sql` (base v1 : `migration_v2.sql` → v3 → v4 ; base v3 : `migration_v4.sql` seul).
+
+Correctif de compatibilité : `migration_v7_compat.sql`. La version de l'app s'affiche en bas de la page Profil et de la page de connexion (v8 attendue).
+
+Règle d'emprunt (v8) : `migration_v8.sql` (un livre non rendu + une demande possible ; validation après retour).
