@@ -1,4 +1,4 @@
-const C='usp-v9',A=['./','index.html','manifest.json','assets/supabase.js','assets/icons/logo.webp','assets/icons/logo-sm.webp','assets/icons/icon-192.png'];
+const C='usp-v10',A=['./','index.html','manifest.json','assets/supabase.js','assets/icons/logo.webp','assets/icons/logo-sm.webp','assets/icons/icon-192.png'];
 // Activation immédiate : une nouvelle version remplace l'ancienne sans attendre
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(A.map(u=>new Request(u,{cache:'reload'})))))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type=='SKIP_WAITING')self.skipWaiting()});
